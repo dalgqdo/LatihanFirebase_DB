@@ -4,20 +4,28 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.example.androidlatihan15_firebasedb_aldi.helpers.PrefHelper
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.example.androidlatihan15_firebasedb_aldi.model.BukuModel
+import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.tambah_data.*
 
 class TambahData : AppCompatActivity() {
 
     lateinit var dbRef: DatabaseReference
     lateinit var helperPref: PrefHelper
+    var datax : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.tambah_data)
 
+        datax = intent.getStringExtra("kode")
         helperPref = PrefHelper(this)
+
+        if (datax != null){
+            showdataFromDB()
+        }
+
         btn_simpan.setOnClickListener {
             val nama = et_namaPenulis.text.toString()
             val judul = et_judulBuku.text.toString()
@@ -34,7 +42,12 @@ class TambahData : AppCompatActivity() {
 
     fun simpanToFireBase(nama: String, judul: String, tgl: String, desc: String) {
         val uidUser = helperPref.getUID()
-        val counterID = helperPref.getCounterId()
+        val counterID : Int
+        if (datax !=  null){
+            counterID = datax!!.toInt()
+        }else{
+            counterID = helperPref.getCounterId()
+        }
 
         dbRef = FirebaseDatabase.getInstance().getReference("dataBuku/$uidUser")
         dbRef.child("$counterID/id").setValue(uidUser)
@@ -45,8 +58,31 @@ class TambahData : AppCompatActivity() {
 
         Toast.makeText(this, "Data berhasil ditambah", Toast.LENGTH_SHORT).show()
 
-        helperPref.saveCounterId(counterID + 1)
+        if(datax == null){
+            helperPref.saveCounterId(counterID+1)
+        }
+
+//        helperPref.saveCounterId(counterID + 1)
         onBackPressed()
+    }
+
+    fun showdataFromDB(){
+        dbRef = FirebaseDatabase.getInstance().getReference("dataBuku/${helperPref.getUID()}/${datax}")
+        dbRef. addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+                        val buku = p0.getValue(BukuModel::class.java)
+                        et_namaPenulis.setText(buku!!.getNama())
+                        et_judulBuku.setText(buku.getJudulBuku())
+                        et_tanggal.setText(buku.getTanggal())
+                        et_deskripsi.setText(buku.getDescription())
+
+
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+        })
     }
 
 }

@@ -12,6 +12,12 @@
               android:textStyle="bold"
     />
     <EditText android:layout_width="350dp" android:layout_height="wrap_content"
+              android:hint="Name"
+              android:inputType="text"
+              android:id="@+id/et_nama"
+              android:textAlignment="center"
+    />
+    <EditText android:layout_width="350dp" android:layout_height="wrap_content"
               android:hint="Email"
               android:inputType="textEmailAddress"
               android:id="@+id/et_email"

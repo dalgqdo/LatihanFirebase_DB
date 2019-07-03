@@ -40,25 +40,25 @@ class MainActivity : AppCompatActivity() {
             .build()
         mGoogleSignIn = GoogleSignIn.getClient(this, gso)
         sign_in_button.setOnClickListener { signIn() }
-//        btn_reg.setOnClickListener {
-//            startActivity(Intent(this, Register_Act::class.java))
-//        }
-//        btn_login.setOnClickListener {
-//            val email = et_email.text.toString()
-//            val password = et_password.text.toString()
+        btn_reg.setOnClickListener {
+            startActivity(Intent(this, Register::class.java))
+        }
+        btn_login.setOnClickListener {
+            val email = et_email.text.toString()
+            val password = et_password.text.toString()
 
-//            if (email.isNotEmpty() || password.isNotEmpty() || !email.equals("") || !password.equals("")) {
-//                fAuth.signInWithEmailAndPassword(email, password)
-//                    .addOnSuccessListener {
-//                        startActivity(Intent(this, MainActivity::class.java))
-//                    }
-//                    .addOnFailureListener {
-//                        Toast.makeText(this, "LOGIN GAGAL", Toast.LENGTH_SHORT).show()
-//                    }
-//            } else {
-//                Toast.makeText(this, "LOGIN GAGAL", Toast.LENGTH_SHORT).show()
-//            }
-//        }
+            if (email.isNotEmpty() || password.isNotEmpty() || !email.equals("") || !password.equals("")) {
+                fAuth.signInWithEmailAndPassword(email, password)
+                    .addOnSuccessListener {
+                        startActivity(Intent(this, HalamanDepan::class.java))
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, "LOGIN GAGAL", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                Toast.makeText(this, "LOGIN GAGAL", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun signIn() {

@@ -18,7 +18,7 @@ class HalamanDepan : AppCompatActivity(), BukuAdapter.FirebaseDataListener {
     override fun onUpdate(buku: BukuModel, position: Int) {
             val datax = buku.getKey()
             val intent = Intent(this, TambahData::class.java)
-            intent.putExtra("data", datax)
+            intent.putExtra("kode", datax)
             startActivity(intent)
         }
 
